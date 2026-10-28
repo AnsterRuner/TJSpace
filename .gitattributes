@@ -1,0 +1,7 @@
+# 统一使用 LF，避免在 macOS 上执行 .sh 时报 bad interpreter
+* text=auto eol=lf
+*.sh text eol=lf
+*.pbxproj text eol=lf
+*.png binary
+*.ipa binary
+*.xcarchive binary
