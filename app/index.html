@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-platform="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#F6F7F9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TJSpace">
+<meta name="format-detection" content="telephone=no">
+<title>TJSpace</title>
+<link rel="apple-touch-icon" href="icon-180.png">
+<script>
+  /* 原生壳内提前打标，避免桌面外壳一闪而过 */
+  (function () {
+    var C = window.Capacitor;
+    var native = (C && typeof C.isNativePlatform === 'function' && C.isNativePlatform())
+      || /^(capacitor|ionic):/.test(location.protocol);
+    if (native) document.documentElement.classList.add('is-native');
+  })();
+</script>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/platform.css">
+<link rel="stylesheet" href="css/native.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="screen">
+
+    <!-- 系统状态栏：仅留出空隙（桌面预览时绘制占位内容） -->
+    <div class="statusbar" aria-hidden="true">
+      <div class="sb-left">13:14</div>
+      <div class="sb-right">
+        <svg viewBox="0 0 18 12" width="18" height="12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="4.5" y="5" width="3" height="7" rx="1"/><rect x="9" y="2.5" width="3" height="9.5" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+        <svg viewBox="0 0 16 12" width="16" height="12"><path d="M8 11.2 5.2 8.1a4.3 4.3 0 0 1 5.6 0L8 11.2Zm-4.3-4.7L2.1 4.7a9 9 0 0 1 11.8 0l-1.6 1.8a6.6 6.6 0 0 0-8.6 0Z"/></svg>
+        <svg viewBox="0 0 26 12" width="26" height="12"><rect x="0.5" y="0.5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.2" y="2.2" width="15" height="7.6" rx="1.9"/><path d="M23.4 4.2v3.6c1.1-.3 1.6-1 1.6-1.8s-.5-1.5-1.6-1.8Z"/></svg>
+      </div>
+    </div>
+
+    <main class="views" id="views">
+
+      <!-- ============ 1. TO-DO ============ -->
+      <section class="view is-active" data-view="todo" id="view-todo">
+        <div class="view-scroll" id="todo-scroll">
+          <header class="todo-head">
+            <div class="head-row">
+              <h1 class="month" id="todo-month">OCTOBER</h1>
+              <span class="weekno" id="todo-weekno">第 5 周</span>
+              <button class="today-btn" id="btn-today" type="button">今</button>
+            </div>
+            <div class="weekstrip" id="weekstrip"></div>
+            <div class="daynote" id="daynote" hidden></div>
+          </header>
+          <div class="tasklist" id="tasklist"></div>
+          <div class="scroll-tail"></div>
+        </div>
+      </section>
+
+      <!-- ============ 2. AI ============ -->
+      <section class="view" data-view="ai" id="view-ai">
+        <div class="ai-space1">
+          <div class="ai-head">
+            <div class="model-pill" id="model-pill">
+              <span class="mp-logo" id="mp-logo"></span>
+              <span class="mp-name" id="mp-name">ChatGPT</span>
+            </div>
+            <button class="icon-btn" id="btn-replan" type="button" title="重新规划">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5V2.5L8 6l4 3.5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z" fill="currentColor"/></svg>
+            </button>
+          </div>
+          <div class="chat" id="chat"></div>
+          <div class="ai-inputbar">
+            <input id="chat-input" type="text" placeholder="Type text…" autocomplete="off">
+            <button id="chat-send" type="button" aria-label="发送">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5m0 0-6 6m6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="ai-space2">
+          <div class="free-head">
+            <span>可自行安排且无时限的事项。</span>
+            <span class="free-count" id="free-count"></span>
+          </div>
+          <div class="free-list" id="free-list"></div>
+        </div>
+      </section>
+
+      <!-- ============ 3. 作业 ============ -->
+      <section class="view" data-view="hw" id="view-hw">
+        <div class="view-scroll">
+          <header class="todo-head hw-head">
+            <div class="head-row"><h1 class="month">作业</h1></div>
+            <div class="hw-sub">Assignments</div>
+          </header>
+          <div class="hw-empty">
+            <div class="hw-badge">beta</div>
+            <p>此处将汇总 Canvas 课程作业与截止时间。<br>v0.1.0 暂未开放。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 4. 我的 ============ -->
+      <section class="view" data-view="me" id="view-me">
+        <div class="view-scroll">
+          <header class="me-head">
+            <div class="avatar" id="me-avatar">T</div>
+            <div class="me-id">
+              <div class="me-name" id="me-name">Name…</div>
+              <div class="me-meta"><span id="me-country">中国 · 上海</span><i>·</i><span id="me-gender">男</span></div>
+            </div>
+            <button class="pill-btn" id="btn-edit-profile" type="button">Edit</button>
+          </header>
+          <div class="me-list" id="me-list"></div>
+          <div class="me-foot">TJSpace v0.1.0 · prototype</div>
+          <div class="scroll-tail"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 浮动加号 -->
+    <button class="fab" id="fab" type="button" aria-label="添加">
+      <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+
+    <!-- 底部栏 -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab is-active" data-tab="todo" type="button">
+        <span class="tab-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23"><rect x="3.2" y="4.2" width="17.6" height="16" rx="4.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M7.6 12.2l2.6 2.6 5-5.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="tab-lb">To-do</span>
+      </button>
+      <button class="tab" data-tab="ai" type="button">
+        <span class="tab-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23"><path d="M12 3.2l1.7 4.6 4.6 1.7-4.6 1.7L12 15.8l-1.7-4.6L5.7 9.5l4.6-1.7L12 3.2Z" fill="currentColor"/><path d="M18 15l.9 2.3 2.3.9-2.3.9L18 21.4l-.9-2.3-2.3-.9 2.3-.9L18 15Z" fill="currentColor"/></svg>
+        </span>
+        <span class="tab-lb">AI</span>
+      </button>
+      <button class="tab" data-tab="hw" type="button">
+        <span class="tab-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23"><path d="M5.4 4.6h9.2l4 4v10.8a1.4 1.4 0 0 1-1.4 1.4H5.4A1.4 1.4 0 0 1 4 19.4V6a1.4 1.4 0 0 1 1.4-1.4Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M14.4 4.6v4.2h4.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="tab-lb">作业</span>
+      </button>
+      <button class="tab" data-tab="me" type="button">
+        <span class="tab-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23"><circle cx="12" cy="8.4" r="3.9" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M4.6 20.2c.7-3.9 3.7-6.1 7.4-6.1s6.7 2.2 7.4 6.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+        </span>
+        <span class="tab-lb">我的</span>
+      </button>
+    </nav>
+
+    <div class="sheet-root" id="sheet-root"></div>
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/native.js"></script>
+<script src="js/holidays.js"></script>
+<script src="js/store.js"></script>
+<script src="js/todo.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/me.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+/* ============================================================
+   TJSpace · 原生壳（Capacitor / iOS）适配
+   浏览器中 env(safe-area-inset-*) 为 0，因此这些规则在桌面预览下
+   不会改变任何视觉效果。
+   ============================================================ */
+
+:root{
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  /* 底部浮动栏需要整体抬到 Home Indicator 之上 */
+  --tabbar-total: calc(12px + var(--tabbar-h) + var(--safe-b));
+}
+
+/* 刘海 / 灵动岛：内容区让出真实安全区 */
+.view{ padding-top: max(var(--status-h), var(--safe-t)); }
+.tabbar{ bottom: calc(12px + var(--safe-b)); }
+
+/* ---------- 仅在原生壳内生效 ---------- */
+html.is-native .device{
+  width:100%;height:100%;border-radius:0;box-shadow:none;
+}
+html.is-native .device::after{ display:none; }
+/* 真机上由系统绘制状态栏，占位内容必须隐藏 */
+html.is-native .statusbar{ display:none !important; }
+
+/* 关掉整页橡皮筋回弹，只保留列表内部的惯性滚动 */
+html.is-native,html.is-native body{ overscroll-behavior:none; }
+html.is-native .view-scroll{ overscroll-behavior:contain; }
+
+/* 键盘弹出时输入栏不被遮挡（AI 页底部输入条） */
+html.is-native .ai-inputbar{ padding-bottom:max(8px, var(--safe-b)); }

@@ -1,0 +1,87 @@
+name: Build unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  ios:
+    name: Build TJSpace-unsigned.ipa
+    runs-on: macos-15
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app
+          xcodebuild -version
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate iOS project (first run only)
+        run: |
+          if [ ! -d "ios/App/App.xcodeproj" ]; then
+            npx cap add ios
+          fi
+
+      - name: Sync web assets
+        run: npx cap sync ios
+
+      - name: Install CocoaPods dependencies
+        run: |
+          if [ -f "ios/App/Podfile" ]; then
+            cd ios/App
+            pod install --repo-update
+          fi
+
+      - name: Build unsigned archive
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination "generic/platform=iOS" \
+            -archivePath build/TJSpace.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_ENTITLEMENTS="" \
+            DEVELOPMENT_TEAM="" \
+            ENABLE_BITCODE=NO \
+            ONLY_ACTIVE_ARCH=NO \
+            ARCHS=arm64 \
+            archive
+
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          APP="build/TJSpace.xcarchive/Products/Applications/App.app"
+          mkdir -p build/stage/Payload
+          cp -R "$APP" build/stage/Payload/
+          rm -rf build/stage/Payload/App.app/_CodeSignature || true
+          rm -f  build/stage/Payload/App.app/embedded.mobileprovision || true
+          cd build/stage
+          zip -qry ../../TJSpace-unsigned.ipa Payload
+          cd ../..
+          ls -lh TJSpace-unsigned.ipa
+          file "$APP/App"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TJSpace-unsigned-ipa
+          path: TJSpace-unsigned.ipa
+          if-no-files-found: error

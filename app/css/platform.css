@@ -1,0 +1,154 @@
+/* ============================================================
+   TJSpace · 平台外观差异
+   html[data-platform="ios"]     → iOS 26 液态玻璃
+   html[data-platform="android"] → Material You / Material 3 Expressive
+   ============================================================ */
+
+/* ---------- iOS 补充 ---------- */
+html[data-platform="ios"] .task{
+  -webkit-backdrop-filter:blur(0);
+}
+html[data-platform="ios"] .me-row,
+html[data-platform="ios"] .free-item{border-radius:18px}
+html[data-platform="ios"] .sheet{border-radius:28px 28px 0 0}
+
+/* ============================================================
+   ANDROID
+   ============================================================ */
+html[data-platform="android"]{
+  --tabbar-total:var(--tabbar-h);
+  --r-card:22px;
+}
+
+html[data-platform="android"] body{background:#DDE1E6}
+
+/* 状态栏：Material 更紧凑 */
+html[data-platform="android"] .statusbar{padding:0 20px 6px;font-size:13px}
+
+/* 月份标题：Material 使用更紧的字重与字距 */
+html[data-platform="android"] .month{
+  font-size:30px;font-weight:700;letter-spacing:-.4px;
+  font-family:var(--font-display);
+}
+html[data-platform="android"] .weekno{
+  border-radius:6px;font-size:11px;font-weight:600;
+  background:color-mix(in srgb,var(--accent) 14%,transparent);
+  color:color-mix(in srgb,var(--accent) 78%,var(--fg));
+}
+html[data-platform="android"] .today-btn{
+  border-radius:10px;width:38px;height:32px;
+  border:1px solid var(--hair-strong);font-weight:600;
+}
+
+/* 日期条：Material 3 date strip —— 选中为实心圆 */
+html[data-platform="android"] .weekstrip{gap:0;margin-top:18px}
+html[data-platform="android"] .day{padding:5px 0 7px;border-radius:0}
+html[data-platform="android"] .day.is-selected{background:none}
+html[data-platform="android"] .day.is-selected .dnum{
+  color:#fff;background:var(--accent);font-weight:700;
+}
+html[data-platform="android"] .dnum{
+  width:34px;height:34px;line-height:34px;text-align:center;border-radius:50%;
+  font-size:15px;font-weight:600;display:block;
+}
+html[data-platform="android"] .day.is-today .dnum{
+  color:#fff;background:color-mix(in srgb,var(--accent) 88%,#000);font-weight:700;
+}
+html[data-platform="android"] .day.is-selected .dnum{background:var(--accent)}
+html[data-platform="android"] .day.is-today.is-selected .dnum{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 24%,transparent)}
+html[data-platform="android"] .day.is-today::after{display:none}
+html[data-platform="android"] .dow{font-size:10.5px;font-weight:600;letter-spacing:.02em}
+
+/* 任务卡：Material 卡片 + 左侧色带 */
+html[data-platform="android"] .task{
+  border-width:0;
+  border-radius:20px;
+  padding:12px 12px 12px 14px;
+  background:color-mix(in srgb,var(--tc) 9%,var(--surface));
+  box-shadow:0 1px 2px rgba(20,22,26,.06), 0 8px 20px -10px color-mix(in srgb,var(--tc) 70%,transparent);
+  overflow:hidden;
+}
+html[data-platform="android"] .task::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--tc);border-radius:0 4px 4px 0;
+}
+html[data-platform="android"] .ico{border-radius:12px}
+html[data-platform="android"] .check{border-radius:50%;border-width:2px}
+html[data-platform="android"] .editbtn{border-width:0;background:color-mix(in srgb,var(--tc) 16%,transparent)}
+
+/* AI 胶囊 */
+html[data-platform="android"] .model-pill{border-radius:10px;padding:7px 14px 7px 10px;font-weight:600}
+html[data-platform="android"] .ai-inputbar{border-radius:24px;background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+html[data-platform="android"] #chat-send{border-radius:10px}
+html[data-platform="android"] .msg{border-radius:18px}
+html[data-platform="android"] .msg.ai{border-bottom-left-radius:6px;background:color-mix(in srgb,var(--accent) 9%,var(--surface))}
+html[data-platform="android"] .msg.me{border-bottom-right-radius:6px}
+
+/* 我的 */
+html[data-platform="android"] .avatar{border-radius:16px}
+html[data-platform="android"] .pill-btn{border-radius:10px;border:none;background:color-mix(in srgb,var(--accent) 13%,transparent);color:color-mix(in srgb,var(--accent) 78%,var(--fg))}
+html[data-platform="android"] .me-row{border-radius:18px;border:none;background:color-mix(in srgb,var(--fg) 3.5%,var(--surface))}
+html[data-platform="android"] .r-ico{border-radius:50%}
+
+/* FAB：Material 3 —— 圆角方形 */
+html[data-platform="android"] .fab{
+  width:56px;height:56px;border-radius:18px;
+  right:18px;bottom:calc(var(--tabbar-total) + 18px);
+}
+html[data-platform="android"] .fab::after{border-radius:18px}
+
+/* 底部栏：Material 3 Navigation Bar */
+html[data-platform="android"] .tabbar{
+  left:0;right:0;bottom:0;height:var(--tabbar-h);
+  border-radius:0;padding:0 8px calc(8px + env(safe-area-inset-bottom,0px));
+  background:color-mix(in srgb,var(--surface) 94%,var(--accent));
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  border:none;border-top:1px solid var(--hair);
+  box-shadow:0 -1px 0 var(--hair), 0 -6px 22px rgba(20,22,26,.05);
+  overflow:visible;
+}
+html[data-platform="android"] .tabbar::before{display:none}
+html[data-platform="android"] .tab{gap:3px;padding-top:10px}
+html[data-platform="android"] .tab-ico{
+  height:32px;width:56px;border-radius:16px;
+  transition:background .24s;
+}
+html[data-platform="android"] .tab-lb{font-size:11px;font-weight:600;letter-spacing:.01em}
+html[data-platform="android"] .tab.is-active .tab-ico{
+  background:color-mix(in srgb,var(--accent) 16%,transparent);
+  transform:none;
+}
+html[data-platform="android"] .tab.is-active .tab-lb{font-weight:700}
+
+/* Sheet：Material bottom sheet */
+html[data-platform="android"] .sheet{
+  border-radius:28px 28px 0 0;
+  padding-left:20px;padding-right:20px;
+}
+html[data-platform="android"] .sheet-grab{width:32px;height:4px}
+html[data-platform="android"] .sheet-title{font-size:19px;font-weight:700}
+html[data-platform="android"] .seg{border-radius:999px;background:none;border:1px solid var(--hair-strong);padding:0;overflow:hidden}
+html[data-platform="android"] .seg button{border-radius:0;padding:9px 8px;font-weight:600}
+html[data-platform="android"] .seg button.is-on{background:color-mix(in srgb,var(--accent) 14%,transparent);color:color-mix(in srgb,var(--accent) 80%,var(--fg));box-shadow:none}
+html[data-platform="android"] .field{border-radius:12px;background:color-mix(in srgb,var(--fg) 4%,var(--surface))}
+html[data-platform="android"] .btn-primary{border-radius:999px}
+html[data-platform="android"] .btn-ghost{border-radius:999px}
+html[data-platform="android"] .dt-chip{border-radius:12px}
+html[data-platform="android"] .sw{border-radius:50%}
+html[data-platform="android"] .toast{border-radius:10px;font-size:13px}
+html[data-platform="android"] .wheelbox{border-radius:20px}
+html[data-platform="android"] .wheel-band{border-radius:14px}
+
+/* ---------- 深色主题微调 ---------- */
+html.is-dark .tabbar::before{
+  background:linear-gradient(155deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.02) 42%,rgba(255,255,255,0) 62%,rgba(255,255,255,.05) 100%);
+}
+html.is-dark .tabbar{
+  box-shadow:0 10px 34px -8px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14);
+}
+html.is-dark .toast{background:rgba(245,246,248,.94);color:#14161A}
+html.is-dark .backdrop{background:rgba(0,0,0,.55)}
+html.is-dark .check svg{stroke:#14161A}
+html.is-dark .btn-primary{color:#14161A}
+html.is-dark .msg.me{color:#14161A}
+html.is-dark .fab{color:#14161A}

@@ -1,0 +1,57 @@
+/* ============================================================
+   TJSpace · Design Tokens
+   主题色 / 前景色 / 背景色 由「我的 → 主题颜色」写入 :root 内联变量
+   ============================================================ */
+:root{
+  /* 可由用户覆盖 */
+  --accent: #FF8A3D;
+  --fg: #14161A;
+  --bg: #F6F7F9;
+
+  /* 派生 */
+  --surface: #FFFFFF;
+  --surface-2: #FBFBFC;
+  --muted: #8A8F9A;
+  --hair: rgba(20,22,26,.08);
+  --hair-strong: rgba(20,22,26,.14);
+  --fg-weak: rgba(20,22,26,.55);
+  --fg-faint: rgba(20,22,26,.30);
+  --fg-ghost: rgba(20,22,26,.16);
+
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-ink: color-mix(in srgb, var(--accent) 82%, #000);
+
+  /* 几何 */
+  --r-card: 18px;
+  --r-sheet: 26px;
+  --pad: 20px;
+  --gap: 10px;
+  --tabbar-h: 62px;
+  --status-h: 44px;
+
+  /* 阴影 */
+  --sh-card: 0 1px 2px rgba(20,22,26,.04), 0 4px 14px rgba(20,22,26,.05);
+  --sh-fab: 0 6px 18px color-mix(in srgb, var(--accent) 38%, transparent), 0 2px 6px rgba(20,22,26,.12);
+  --sh-sheet: 0 -8px 40px rgba(20,22,26,.16);
+
+  /* 字体 */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", Roboto, sans-serif;
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  --font-num: "SF Pro Display", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Android 外观令牌 */
+html[data-platform="android"]{
+  --r-card: 22px;
+  --r-sheet: 28px;
+  --pad: 18px;
+  --gap: 11px;
+  --tabbar-h: 72px;
+  --status-h: 40px;
+  --font: "Google Sans", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: "Google Sans Display", "Google Sans", Roboto, "Noto Sans SC", sans-serif;
+  --sh-card: 0 1px 3px rgba(20,22,26,.06), 0 6px 18px rgba(20,22,26,.07);
+  --sh-fab: 0 8px 22px color-mix(in srgb, var(--accent) 34%, transparent), 0 2px 6px rgba(20,22,26,.14);
+}

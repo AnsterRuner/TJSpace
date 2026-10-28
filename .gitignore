@@ -1,0 +1,17 @@
+# 依赖与构建产物
+node_modules/
+build/
+*.ipa
+*.xcarchive
+DerivedData/
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+.workbuddy/
+.vscode/
+.idea/
+
+# Xcode 用户态文件
+xcuserdata/
+*.xcuserstate

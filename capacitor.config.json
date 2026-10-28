@@ -1,0 +1,23 @@
+{
+  "appId": "com.tjspace.app",
+  "appName": "TJSpace",
+  "webDir": "app",
+  "loggingBehavior": "none",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "backgroundColor": "#F6F7F9",
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "android": {
+    "backgroundColor": "#F6F7F9"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "StatusBar": {
+      "overlaysWebView": true
+    }
+  }
+}
